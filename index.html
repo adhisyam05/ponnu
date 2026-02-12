@@ -923,59 +923,81 @@
 
         // Create shooting stars
         function createStars() {
-            const successPage = document.getElementById('revealPage');
             const stars = ['⭐', '✨', '🌟', '💫'];
 
-            for (let i = 0; i < 40; i++) {
+            // Create initial burst of stars
+            for (let i = 0; i < 20; i++) {
                 setTimeout(() => {
-                    const star = document.createElement('div');
-                    star.className = 'star';
-                    star.textContent = stars[Math.floor(Math.random() * stars.length)];
-                    star.style.top = Math.random() * 80 + 10 + '%';
-                    star.style.animationDelay = '0s';
-                    star.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                    star.style.fontSize = (Math.random() * 30 + 20) + 'px';
-                    successPage.appendChild(star);
-
-                    setTimeout(() => star.remove(), 3000);
-                }, i * 80);
+                    createSingleStar(stars);
+                }, i * 100);
             }
 
-            // Keep creating stars
-            setInterval(() => {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.textContent = stars[Math.floor(Math.random() * stars.length)];
-                star.style.top = Math.random() * 80 + 10 + '%';
-                star.style.animationDelay = '0s';
-                star.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                star.style.fontSize = (Math.random() * 30 + 20) + 'px';
-                successPage.appendChild(star);
+            // Continue creating stars for 8 seconds
+            const starInterval = setInterval(() => {
+                createSingleStar(stars);
+            }, 400);
 
-                setTimeout(() => star.remove(), 3000);
-            }, 250);
+            // Stop creating new stars after 8 seconds
+            setTimeout(() => {
+                clearInterval(starInterval);
+            }, 8000);
+        }
+
+        function createSingleStar(stars) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.textContent = stars[Math.floor(Math.random() * stars.length)];
+            star.style.top = Math.random() * 80 + 10 + '%';
+
+            const duration = Math.random() * 2 + 2; // 2-4 seconds
+            star.style.animationDuration = duration + 's';
+            star.style.fontSize = (Math.random() * 30 + 20) + 'px';
+
+            document.getElementById('revealPage').appendChild(star);
+
+            // Remove after animation completes (add 100ms buffer)
+            setTimeout(() => star.remove(), (duration * 1000) + 100);
         }
 
         // Create confetti
         function createConfetti() {
-            const successPage = document.getElementById('revealPage');
             const colors = ['#ff6b9d', '#c44569', '#ffa8c5', '#667eea', '#764ba2', '#f093fb', '#fee140', '#fa709a'];
 
-            setInterval(() => {
-                for (let i = 0; i < 8; i++) {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = Math.random() * 100 + '%';
-                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.animationDelay = Math.random() * 2 + 's';
-                    confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                    confetti.style.width = (Math.random() * 8 + 8) + 'px';
-                    confetti.style.height = (Math.random() * 8 + 8) + 'px';
-                    successPage.appendChild(confetti);
+            // Create initial burst of confetti
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    createSingleConfetti(colors);
+                }, i * 100); // Stagger creation by 100ms
+            }
 
-                    setTimeout(() => confetti.remove(), 5000);
+            // Continue creating confetti for 5 seconds
+            const confettiInterval = setInterval(() => {
+                for (let i = 0; i < 3; i++) {
+                    createSingleConfetti(colors);
                 }
-            }, 150);
+            }, 300);
+
+            // Stop creating new confetti after 5 seconds
+            setTimeout(() => {
+                clearInterval(confettiInterval);
+            }, 5000);
+        }
+
+        function createSingleConfetti(colors) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+            const duration = Math.random() * 2 + 3; // 3-5 seconds
+            confetti.style.animationDuration = duration + 's';
+            confetti.style.width = (Math.random() * 8 + 6) + 'px';
+            confetti.style.height = (Math.random() * 8 + 6) + 'px';
+
+            document.body.appendChild(confetti);
+
+            // Remove after animation completes (add 100ms buffer)
+            setTimeout(() => confetti.remove(), (duration * 1000) + 100);
         }
 
         // Initialize
